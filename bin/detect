@@ -1,56 +1,5 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+# bin/detect <build-dir>
 
-set -e # fail fast
-
-# parse params
-BUILD_DIR=$1
-CACHE_DIR=$2
-BUILDPACK_NAME=imageutils
-
-function indent() {
-  c='s/^/       /'
-  case $(uname) in
-    Darwin) sed -l "$c";;
-    *)      sed -u "$c";;
-  esac
-}
-
-function vendor() {
-  url="$1"
-  archive_name="${url##*/}"
-  cache_path="${CACHE_DIR}/vendor/${archive_name}"
-  release_path="${BUILD_DIR}/vendor/imageutils"
-
-  if [ -f $cache_path ]; then
-    echo "Found in cache ($cache_path)" | indent
-  else
-    echo "Fetching $url" | indent
-    mkdir -p $cache_path
-    curl -sL $url -s -o $cache_path
-  fi
-
-  echo "Extracting to $release_path" | indent
-  mkdir -p $release_path
-  tar xz -C $release_path -f $cache_path
-
-  [ -d "$release_path/bin" ] && export PATH=$release_path/bin:$PATH
-
-  true
-}
-
-echo "-----> Vendoring binaries"
-vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz"
-
-echo "-----> Configuring build environment"
-
-cat <<EOF > export
-export PATH="$PATH:\$PATH"
-EOF
-
-echo "-----> Building runtime environment"
-mkdir -p $BUILD_DIR/.profile.d
-
-cat <<EOF > $BUILD_DIR/.profile.d/$BUILDPACK_NAME.sh
-export PATH="${PATH//$BUILD_DIR//app}:\$PATH"
-EOF
+echo "imageutils Buildback"
+exit 0
