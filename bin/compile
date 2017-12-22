@@ -9,6 +9,7 @@ set -eu
 # parse params
 BUILD_DIR=$1
 CACHE_DIR=$2
+ENV_DIR=$2
 BUILDPACK_NAME=imageutils
 
 function indent() {
@@ -25,6 +26,7 @@ function vendor() {
   cache_path="${CACHE_DIR}/${archive_name}"
   release_path="${BUILD_DIR}/vendor/imageutils"
 
+  echo "Look at cache `ls ${CACHE_DIR}`" | indent
   if [ -f $cache_path ]; then
     echo "Skip download - found in cache" | indent
   else
