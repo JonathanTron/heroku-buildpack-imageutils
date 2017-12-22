@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e # fail fast
+
+# parse params
+BUILD_DIR=$1
+CACHE_DIR=$2
+BUILDPACK_NAME=imageutils
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+function vendor() {
+  binary="$1"
+  path="$2"
+
+  echo "Fetching $binary" | indent
+  mkdir -p $path
+  curl -sL $binary -s -o - | tar xz -C $path -f -
+
+  [ -d "$path/bin" ] && export PATH=$path/bin:$PATH
+
+  true
+}
+
+echo "-----> Vendoring binaries"
+vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz" "$BUILD_DIR/vendor/imageutils"
+
+echo "-----> Configuring build environment"
+
+cat <<EOF > export
+export PATH="$PATH:\$PATH"
+EOF
+
+echo "-----> Building runtime environment"
+mkdir -p $BUILD_DIR/.profile.d
+
+cat <<EOF > $BUILD_DIR/.profile.d/$BUILDPACK_NAME.sh
+export PATH="${PATH//$BUILD_DIR//app}:\$PATH"
+EOF
