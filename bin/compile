@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # bin/compile BUILD_DIR CACHE_DIR ENV_DIR
 
-set -e # fail fast
+# fail hard
+set -o pipefail
+# fail harder
+set -eu
 
 # parse params
 BUILD_DIR=$1
