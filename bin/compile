@@ -32,9 +32,9 @@ function vendor() {
     curl -sL $url -s -o $cache_path
   fi
 
-  echo "Extracting to $release_path" | indent
-  mkdir -p $release_path
-  tar xz -C $release_path -f $cache_path
+  # echo "Extracting to $release_path" | indent
+  # mkdir -p $release_path
+  # tar xz -C $release_path -f $cache_path
 
   [ -d "$release_path/bin" ] && export PATH=$release_path/bin:$PATH
 
