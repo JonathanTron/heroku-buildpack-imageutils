@@ -29,7 +29,8 @@ function vendor() {
     echo "Skip download - found in cache" | indent
   else
     echo "Downloading $url" | indent
-    curl -sL $url -s -o $cache_path
+    curl -sL $url -o $cache_path
+    echo "Downloaded..." | indent
   fi
 
   # echo "Extracting to $release_path" | indent
