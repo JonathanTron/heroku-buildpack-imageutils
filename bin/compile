@@ -26,19 +26,17 @@ function vendor() {
   cache_path="${CACHE_DIR}/${archive_name}"
   release_path="${BUILD_DIR}/vendor/imageutils"
 
-  echo "Look at cache `ls ${CACHE_DIR}`" | indent
   mkdir -p ${CACHE_DIR}
   if [ -f $cache_path ]; then
     echo "Skip download - found in cache" | indent
   else
     echo "Downloading $url" | indent
     curl -sL $url -o $cache_path
-    echo "Downloaded..." | indent
   fi
 
-  # echo "Extracting to $release_path" | indent
-  # mkdir -p $release_path
-  # tar xz -C $release_path -f $cache_path
+  echo "Extracting to $release_path" | indent
+  mkdir -p $release_path
+  tar xz -C $release_path -f $cache_path
 
   [ -d "$release_path/bin" ] && export PATH=$release_path/bin:$PATH
 
