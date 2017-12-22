@@ -17,20 +17,30 @@ function indent() {
 }
 
 function vendor() {
-  binary="$1"
-  path="$2"
+  url="$1"
+  archive_name="${url##*/}"
+  cache_path="${CACHE_DIR}/vendor/${archive_name}"
+  release_path="${BUILD_DIR}/vendor/imageutils"
 
-  echo "Fetching $binary" | indent
-  mkdir -p $path
-  curl -sL $binary -s -o - | tar xz -C $path -f -
+  if [ -f $cache_path ]; then
+    echo "Found in cache ($cache_path)" | indent
+  else
+    echo "Fetching $url" | indent
+    mkdir -p $cache_path
+    curl -sL $url -s -o $cache_path
+  fi
 
-  [ -d "$path/bin" ] && export PATH=$path/bin:$PATH
+  echo "Extracting to $release_path" | indent
+  mkdir -p $release_path
+  tar xz -C $release_path -f $cache_path
+
+  [ -d "$release_path/bin" ] && export PATH=$release_path/bin:$PATH
 
   true
 }
 
 echo "-----> Vendoring binaries"
-vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz" "$BUILD_DIR/vendor/imageutils"
+vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz"
 
 echo "-----> Configuring build environment"
 
