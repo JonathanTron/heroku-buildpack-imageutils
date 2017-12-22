@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-echo "imageutils Buildback"
+echo "imageutils buildback"
 exit 0

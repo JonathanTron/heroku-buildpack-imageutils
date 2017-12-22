@@ -9,6 +9,9 @@ clean:
 	rm -rf src/ dist/
 	-docker rm imageutils
 
+test:
+	docker run -it -v `pwd`:/app/buildpack:ro heroku/buildpack-testrunner
+
 src/mozjpeg-3.2-release-source.tar.gz:
 	mkdir -p $$(dirname $@)
 	curl -sL https://github.com/mozilla/mozjpeg/releases/download/v3.2/mozjpeg-3.2-release-source.tar.gz -o $@
@@ -22,7 +25,7 @@ src/pngquant-2.11.4: src/libpng-1.6.34.tar.gz
 	rm -rf $@
 	git clone -b 2.11.4 --recursive https://github.com/pornel/pngquant.git $@
 
-.PHONY: imageutils
+.PHONY: imageutils test clean
 
 imageutils: src/mozjpeg-3.2-release-source.tar.gz src/pngquant-2.11.4
 	docker build --rm -t jonathantron/$@ .

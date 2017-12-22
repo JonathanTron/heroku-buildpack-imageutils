@@ -19,14 +19,13 @@ function indent() {
 function vendor() {
   url="$1"
   archive_name="${url##*/}"
-  cache_path="${CACHE_DIR}/vendor/${archive_name}"
+  cache_path="${CACHE_DIR}/${archive_name}"
   release_path="${BUILD_DIR}/vendor/imageutils"
 
   if [ -f $cache_path ]; then
-    echo "Found in cache ($cache_path)" | indent
+    echo "Skip download - found in cache" | indent
   else
-    echo "Fetching $url" | indent
-    mkdir -p $cache_path
+    echo "Downloading $url" | indent
     curl -sL $url -s -o $cache_path
   fi
 
@@ -39,7 +38,7 @@ function vendor() {
   true
 }
 
-echo "-----> Vendoring binaries"
+echo "-----> Vendoring imageutils"
 vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz"
 
 echo "-----> Configuring build environment"
@@ -51,6 +50,8 @@ EOF
 echo "-----> Building runtime environment"
 mkdir -p $BUILD_DIR/.profile.d
 
-cat <<EOF > $BUILD_DIR/.profile.d/$BUILDPACK_NAME.sh
+cat <<EOF > ${BUILD_DIR}/.profile.d/${BUILDPACK_NAME}.sh
 export PATH="${PATH//$BUILD_DIR//app}:\$PATH"
 EOF
+
+exit 0
