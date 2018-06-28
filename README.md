@@ -3,7 +3,8 @@
 This heroku builpack provides the following tools to work with images:
 
 - [mozjpeg v3.2](https://github.com/mozilla/mozjpeg)
-- [pngquant v2.11.4](https://pngquant.org/) compiled with a static [libpng v1.6.34](http://www.libpng.org/pub/png/libpng.html)
+- [pngquant v2.12.1](https://pngquant.org/) compiled with a static [libpng v1.6.34](http://www.libpng.org/pub/png/libpng.html)
+- [gifsicle v1.91](http://www.lcdf.org/gifsicle/)
 
 ## Using
 
