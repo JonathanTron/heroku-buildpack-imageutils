@@ -11,6 +11,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$2
 BUILDPACK_NAME=imageutils
+BUILDPACK_VERSION=1.1.1
 
 function indent() {
   c='s/^/       /'
@@ -44,7 +45,7 @@ function vendor() {
 }
 
 echo "-----> Vendoring imageutils"
-vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/1.0.0/imageutils-1.0.0.tar.gz"
+vendor "https://github.com/jonathantron/heroku-buildpack-imageutils/releases/download/$BUILDPACK_VERSION/imageutils-$BUILDPACK_VERSION.tar.gz"
 
 echo "-----> Configuring build environment"
 
