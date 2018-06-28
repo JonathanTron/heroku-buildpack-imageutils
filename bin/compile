@@ -10,8 +10,8 @@ set -eu
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$2
-BUILDPACK_NAME=imageutils
-BUILDPACK_VERSION=1.1.1
+BUILDPACK_NAME="imageutils"
+BUILDPACK_VERSION="1.1.1"
 
 function indent() {
   c='s/^/       /'
